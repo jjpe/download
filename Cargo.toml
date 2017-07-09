@@ -7,6 +7,7 @@ description = "A simple cross-platform tool to download things."
 [dependencies]
 curl = "0.4"
 clap = "2.25"
+url = "1.5"
 
 [lib]
 name = "download"
