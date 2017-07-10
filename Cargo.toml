@@ -7,6 +7,9 @@ description = "A simple cross-platform tool to download things."
 [dependencies]
 curl = "0.4"
 clap = "2.25"
+serde = "1.0"
+serde_derive = "1.0"
+serde_json = "1.0"
 url = "1.5"
 
 [lib]
