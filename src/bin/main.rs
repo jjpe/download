@@ -13,17 +13,23 @@ const AUTHORS: &str =  env!("CARGO_PKG_AUTHORS");
 const DESCRIPTION: &str = env!("CARGO_PKG_DESCRIPTION");
 
 
+enum ReturnCode {
+    Ok = 0,
+    InvalidDestination = 1,
+    FailedToDownload = 2,
+    InvalidUrl = 3,
+}
 
 fn main() {
     let args = CliArgs::get();
     match args.to.to_str() {
         None => {
             println!("ERROR: Specify a valid destination using --to <FILE>");
-            process::exit(-10);
+            process::exit(ReturnCode::InvalidDestination as i32);
         },
         Some(file_name) if file_name.is_empty() => {
             println!("ERROR: Specify a valid destination using --to <FILE>");
-            process::exit(-10);
+            process::exit(ReturnCode::InvalidDestination as i32);
         },
         Some(_) => {/* continue below */},
     }
@@ -45,11 +51,11 @@ fn main() {
         },
         Ok(DlStatus::FileExists(location)) => {
             println!("File exists: {}", location.display());
-            process::exit(-11);
+            process::exit(ReturnCode::Ok as i32);
         },
         Err(dl_err) => {
             println!("Failed to download {}:  {:#?}", args.to.display(), dl_err);
-            process::exit(-12);
+            process::exit(ReturnCode::FailedToDownload as i32);
         }
     }
 }
@@ -69,11 +75,11 @@ impl CliArgs {
         let matches: ArgMatches = Self::get_clap_matches();
         let from: &str = matches.value_of("from").unwrap_or_else(|| {
             println!("Error: Must provide an URL using --from");
-            process::exit(-1);
+            process::exit(ReturnCode::InvalidUrl as i32);
         });
         let to: &str = matches.value_of("to").unwrap_or_else(|| {
             println!("Error: Must provide a destination file using --to");
-            process::exit(-1);
+            process::exit(ReturnCode::InvalidDestination as i32);
         });
         let overwrite: bool = match matches.occurrences_of("overwrite") {
             0 => false,
