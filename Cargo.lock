@@ -1,6 +1,6 @@
 [root]
 name = "download"
-version = "0.2.0"
+version = "1.0.0"
 dependencies = [
  "clap 2.25.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "curl 0.4.7 (registry+https://github.com/rust-lang/crates.io-index)",
